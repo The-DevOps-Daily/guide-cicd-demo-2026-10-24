@@ -39,7 +39,18 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
-      - run: npm test
+      - name: Run the tests and write a JUnit report
+        run: >-
+          npm test --
+          --test-reporter=spec --test-reporter-destination=stdout
+          --test-reporter=junit --test-reporter-destination=test-results.xml
+      - name: Upload the test report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-node-${{ matrix.node }}
+          path: test-results.xml
+          retention-days: 7
 
   build:
     needs: [lint, test]
@@ -55,7 +66,26 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Check the build output
+      - name: Upload the site
+        uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: dist/
+          retention-days: 14
+          if-no-files-found: error
+
+  check-site:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download the site
+        uses: actions/download-artifact@v8
+        with:
+          name: site
+          path: site
+      - name: Check the files
         run: |
-          test -s dist/index.html
-          cat dist/version.json
+          ls -l site
+          grep -q '<h1>' site/index.html
+          cat site/version.json
