@@ -11,5 +11,6 @@
   {"topic": "kubectl", "cmd": "kubectl get pods", "description": "List the Pods in the current namespace"},
   {"topic": "kubectl", "cmd": "kubectl rollout status deploy/web", "description": "Wait for a Deployment rollout to finish"},
   {"topic": "kubectl", "cmd": "kubectl rollout undo deploy/web", "description": "Roll a Deployment back to the previous version"},
-  {"topic": "gh", "cmd": "gh workflow run deploy.yml", "description": "Start a workflow that has a workflow_dispatch trigger"}
+  {"topic": "gh", "cmd": "gh workflow run deploy.yml", "description": "Start a workflow that has a workflow_dispatch trigger"},
+  {"topic": "kubectl", "cmd": "kubectl logs -f deploy/web", "description": "Follow the logs of a Deployment's Pods"}
 ]
