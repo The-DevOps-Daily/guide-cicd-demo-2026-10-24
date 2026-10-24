@@ -1,14 +1,15 @@
 [
-  { "topic": "git", "cmd": "git status", "description": "Show changed and untracked files" },
-  { "topic": "git", "cmd": "git log --oneline -n 10", "description": "Show the last ten commits, one per line" },
-  { "topic": "git", "cmd": "git switch -c feature", "description": "Create a branch and switch to it" },
-  { "topic": "docker", "cmd": "docker ps", "description": "List running containers" },
-  { "topic": "docker", "cmd": "docker logs -f web", "description": "Follow the logs of a container" },
-  { "topic": "docker", "cmd": "docker compose up -d", "description": "Start the services of a Compose file in the background" },
-  { "topic": "gh", "cmd": "gh run list", "description": "List recent workflow runs" },
-  { "topic": "gh", "cmd": "gh run watch", "description": "Follow a workflow run until it finishes" },
-  { "topic": "gh", "cmd": "gh run view --log-failed", "description": "Show the logs of the failed steps of a run" },
-  { "topic": "kubectl", "cmd": "kubectl get pods", "description": "List the Pods in the current namespace" },
-  { "topic": "kubectl", "cmd": "kubectl rollout status deploy/web", "description": "Wait for a Deployment rollout to finish" },
-  { "topic": "kubectl", "cmd": "kubectl rollout undo deploy/web", "description": "Roll a Deployment back to the previous version" }
+  {"topic": "git", "cmd": "git status", "description": "Show changed and untracked files"},
+  {"topic": "git", "cmd": "git log --oneline -n 10", "description": "Show the last ten commits, one per line"},
+  {"topic": "git", "cmd": "git switch -c feature", "description": "Create a branch and switch to it"},
+  {"topic": "docker", "cmd": "docker ps", "description": "List running containers"},
+  {"topic": "docker", "cmd": "docker logs -f web", "description": "Follow the logs of a container"},
+  {"topic": "docker", "cmd": "docker compose up -d", "description": "Start the services of a Compose file in the background"},
+  {"topic": "gh", "cmd": "gh run list", "description": "List recent workflow runs"},
+  {"topic": "gh", "cmd": "gh run watch", "description": "Follow a workflow run until it finishes"},
+  {"topic": "gh", "cmd": "gh run view --log-failed", "description": "Show the logs of the failed steps of a run"},
+  {"topic": "kubectl", "cmd": "kubectl get pods", "description": "List the Pods in the current namespace"},
+  {"topic": "kubectl", "cmd": "kubectl rollout status deploy/web", "description": "Wait for a Deployment rollout to finish"},
+  {"topic": "kubectl", "cmd": "kubectl rollout undo deploy/web", "description": "Roll a Deployment back to the previous version"},
+  {"topic": "gh", "cmd": "gh workflow run deploy.yml", "description": "Start a workflow that has a workflow_dispatch trigger"}
 ]
