@@ -17,8 +17,25 @@ jobs:
   ci:
     uses: ./.github/workflows/ci.yml
 
-  deploy:
+  # Package once, so re-running the deploy job (a rollback) reuses this artifact
+  package:
     needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download the site built by CI
+        uses: actions/download-artifact@v8
+        with:
+          name: site
+          path: site
+      - name: Package the site for GitHub Pages
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/
+          retention-days: 14
+
+  deploy:
+    needs: package
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -30,15 +47,6 @@ jobs:
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Download the site built by CI
-        uses: actions/download-artifact@v8
-        with:
-          name: site
-          path: site
-      - name: Package the site for GitHub Pages
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: site/
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
