@@ -2,27 +2,55 @@ name: Hello
 
 on:
   push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
   workflow_dispatch:
+    inputs:
+      name:
+        description: Who to greet
+        type: string
+        default: world
+      shout:
+        description: Print the greeting in capitals
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
+env:
+  GREETING: Hello
+
 jobs:
-  say-hello:
+  greet:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      message: ${{ steps.compose.outputs.message }}
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Say hello
-        run: echo "Hello from GitHub Actions"
-
-      - name: Show where this job runs
+      - name: Compose the message
+        id: compose
+        env:
+          NAME: ${{ inputs.name || 'world' }}
+          SHOUT: ${{ inputs.shout }}
         run: |
-          echo "Event:  $GITHUB_EVENT_NAME"
-          echo "Branch: $GITHUB_REF_NAME"
-          echo "Commit: $GITHUB_SHA"
-          echo "Runner: $RUNNER_OS $RUNNER_ARCH, $ImageOS $ImageVersion"
-          ls -A
+          message="$GREETING, $NAME!"
+          if [ "$SHOUT" = "true" ]; then
+            message="${message^^}"
+          fi
+          echo "message=$message" >> "$GITHUB_OUTPUT"
+
+  report:
+    needs: greet
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Print the message
+        env:
+          MESSAGE: ${{ needs.greet.outputs.message }}
+        run: echo "$MESSAGE"
+
+      - name: Runs only when started by hand
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "Started from the Actions tab or with gh workflow run"
