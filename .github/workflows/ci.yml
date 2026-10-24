@@ -89,7 +89,7 @@ jobs:
   all-checks:
     if: ${{ always() }}
     needs: [lint, test, build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 5
     steps:
       - name: Fail if a needed job failed or was cancelled
