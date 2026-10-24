@@ -1,0 +1,28 @@
+name: Hello
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Say hello
+        run: echo "Hello from GitHub Actions"
+
+      - name: Show where this job runs
+        run: |
+          echo "Event:  $GITHUB_EVENT_NAME"
+          echo "Branch: $GITHUB_REF_NAME"
+          echo "Commit: $GITHUB_SHA"
+          echo "Runner: $RUNNER_OS $RUNNER_ARCH, $ImageOS $ImageVersion"
+          ls -A
