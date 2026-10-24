@@ -35,6 +35,8 @@ ${list.map((c) => `<dt><code>${escapeHtml(c.cmd)}</code></dt><dd>${escapeHtml(c.
     )
     .join('\n');
 
+  const count = commands.length;
+
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -45,7 +47,7 @@ ${list.map((c) => `<dt><code>${escapeHtml(c.cmd)}</code></dt><dd>${escapeHtml(c.
 <body>
 <h1>${escapeHtml(title)}</h1>
 ${sections}
-<footer>Version ${escapeHtml(version)}, commit ${escapeHtml(commit.slice(0, 7))}</footer>
+<footer>${commands.length} commands, version ${escapeHtml(version)}, commit ${escapeHtml(commit.slice(0, 7))}</footer>
 </body>
 </html>
 `;
