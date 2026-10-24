@@ -73,3 +73,15 @@ jobs:
           path: dist/
           retention-days: 14
           if-no-files-found: error
+
+  # One stable check name for branch rulesets, whatever the matrix contains
+  all-checks:
+    if: ${{ always() }}
+    needs: [lint, test, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fail if a needed job failed or was cancelled
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+      - run: echo "All CI jobs passed"
