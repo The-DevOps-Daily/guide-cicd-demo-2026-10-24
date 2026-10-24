@@ -61,7 +61,7 @@ jobs:
           PAGE_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
           for attempt in 1 2 3 4 5 6; do
-            live=$(curl -sSf "${PAGE_URL}version.json?run=$GITHUB_RUN_ID" | jq -r .commit) || live=""
+            live=$(curl -sSf "${PAGE_URL}version.json?run=$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-$attempt" | jq -r .commit) || live=""
             echo "Attempt $attempt: live commit ${live:-none}, expected $GITHUB_SHA"
             if [ "$live" = "$GITHUB_SHA" ]; then
               exit 0
