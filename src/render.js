@@ -35,8 +35,6 @@ ${list.map((c) => `<dt><code>${escapeHtml(c.cmd)}</code></dt><dd>${escapeHtml(c.
     )
     .join('\n');
 
-  const count = commands.length;
-
   return `<!doctype html>
 <html lang="en">
 <head>

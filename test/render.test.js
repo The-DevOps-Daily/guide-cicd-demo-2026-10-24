@@ -34,7 +34,7 @@ test('renderPage shows the title, version and short commit', () => {
     commit: '0123456789abcdef',
   });
   assert.match(html, /<title>Cheatsheet<\/title>/);
-  assert.match(html, /Version 1\.0\.0, commit 0123456/);
+  assert.match(html, /3 commands, version 1\.0\.0, commit 0123456/);
 });
 
 test('renderPage escapes command text', () => {
