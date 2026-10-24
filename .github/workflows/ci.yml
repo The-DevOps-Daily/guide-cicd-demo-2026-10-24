@@ -66,6 +66,17 @@ jobs:
       - run: npm run build
         env:
           SITE_TITLE: ${{ vars.SITE_TITLE }}
+      - name: Write a job summary
+        run: |
+          {
+            echo "### Site build"
+            echo ""
+            echo "| File | Bytes |"
+            echo "| --- | ---: |"
+            for f in dist/*; do
+              echo "| \`${f#dist/}\` | $(wc -c < "$f") |"
+            done
+          } | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Upload the site
         uses: actions/upload-artifact@v7
         with:
