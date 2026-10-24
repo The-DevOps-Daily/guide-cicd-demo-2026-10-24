@@ -66,6 +66,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          SITE_TITLE: ${{ vars.SITE_TITLE }}
       - name: Upload the site
         uses: actions/upload-artifact@v7
         with:

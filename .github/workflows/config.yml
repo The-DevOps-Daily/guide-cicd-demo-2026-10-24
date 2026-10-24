@@ -1,0 +1,46 @@
+name: Config and secrets
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  show-config:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE_TITLE: ${{ vars.SITE_TITLE }}
+    steps:
+      - name: Use a variable and a secret
+        env:
+          API_TOKEN: ${{ secrets.DEMO_API_TOKEN }}
+        run: |
+          if [ -z "$API_TOKEN" ]; then
+            echo "::error::The DEMO_API_TOKEN secret is not set"
+            exit 1
+          fi
+          echo "Site title: $SITE_TITLE"
+          echo "Token length: ${#API_TOKEN}"
+          echo "Printing the token anyway: $API_TOKEN"
+
+      - name: Mask a value you create
+        run: |
+          session_id="session-$RANDOM$RANDOM"
+          echo "::add-mask::$session_id"
+          echo "Session: $session_id"
+
+  oidc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      id-token: write
+    steps:
+      - name: Request an OIDC token and show its claims
+        run: |
+          token=$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+          echo "::add-mask::$token"
+          jq -R 'split(".")[1] | gsub("-";"+") | gsub("_";"/") | @base64d | fromjson
+            | {iss, aud, sub, repository, ref, event_name, runner_environment}' <<< "$token"
